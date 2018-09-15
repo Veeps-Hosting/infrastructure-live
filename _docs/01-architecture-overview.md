@@ -17,7 +17,7 @@ in the diagram.  Here is an overview of what's actually deployed:
 1. [Load balancers](#load-balancers)
 1. [Auto Scaling Groups](#auto-scaling-groups)
 1. [Data stores](#data-stores)
-1. [OpenVPN server](#openvpn-server)
+1. [Bastion host](#bastion-host)
 1. [Jenkins](#jenkins)
 1. [Monitoring, log aggregation, alerting](#monitoring-log-aggregation-alerting)
 1. [DNS and TLS](#dns-and-tls)
@@ -82,7 +82,7 @@ routing for its IP address.
 * *Private subnets* are only accessible from within the VPC. 
 
 Just about everything in this infrastructure is deployed in private subnets to reduce the surface area to attackers. 
-The only exceptions are load balancers and the [OpenVPN server](#openvpn-server), 
+The only exceptions are load balancers and the [Bastion host](#bastion-host), 
 both of which are described below. 
 
 To learn more about VPCs and subnets, check out the Gruntwork [vpc-app module 
@@ -144,15 +144,14 @@ docs](https://github.com/gruntwork-io/package-lambda/tree/master/modules/lambda)
 
 
 
-## OpenVPN server
+## Bastion host
 
 To reduce your surface area to attackers, just about all of the resources in this infrastructure run in private subnets, 
 which are not accessible from the public Internet at all. To allow Veeps Hosting's employees to access these 
-private resources, we expose a single server publicly: an [OpenVPN server](https://openvpn.net/). Once you connect to 
-the server using a VPN client, you are "in the network", and will be able to access the private resources (e.g., you 
-will be able to SSH to your EC2 Instances).
+private resources, we expose a single server publicly: a bastion host. The basic idea is that you first connect to the
+bastion host over SSH and then use it as a jump host or to do port forwarding to connect to the private resources.
 
-For more info, see [SSH and VPN](07-ssh-vpn.md) and [package-openvpn](https://github.com/gruntwork-io/package-openvpn/).
+For more info, see [SSH and VPN](07-ssh-vpn.md).
 
 
 

@@ -26,7 +26,7 @@ terragrunt = {
 
   # When using the terragrunt xxx-all commands (e.g., apply-all, plan-all), deploy these dependencies before this module
   dependencies = {
-    paths = ["../../vpc", "../../../../_global/route53-public", "../route53-private", "../../../mgmt/openvpn-server"]
+    paths = ["../../vpc", "../../../../_global/route53-public", "../route53-private", "../../../mgmt/bastion-host"]
   }  
 }
 
@@ -48,12 +48,12 @@ https_listener_ports_and_acm_ssl_certs = [
 ]
 
 allow_inbound_from_cidr_blocks = [
-  "203.217.18.248/32", # Veeps IP #4
   "203.206.231.248/32", # Veeps IP #5
   "37.228.252.224/32", # Jim (Gruntwork) IP at home
   "202.8.64.0/24", # Veeps IP #1
   "203.19.79.0/24", # Veeps IP #2
   "122.106.231.223/32", # Veeps IP #3
+  "203.217.18.248/32", # Veeps IP #4
 ]
 
 num_days_after_which_archive_log_data = 30

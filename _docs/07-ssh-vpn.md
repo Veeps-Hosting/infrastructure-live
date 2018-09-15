@@ -15,6 +15,9 @@ You can use SSH to connect to any of your EC2 Instances as follows:
 
 * [The traditional way: EC2 Key Pairs](the-traditional-way-ec2-key-pairs)
 * [The better way: ssh-grunt](#the-better-way-ssh-grunt)
+* [The bastion host](#the-bastion-host)
+* [Local port forwarding](#local-port-forwarding)
+* [Socks proxy](#socks-proxy)
 
 ### The traditional way: EC2 Key Pairs
 
@@ -68,91 +71,127 @@ ssh-add /Users/josh/.ssh/id_rsa
 
 # Every time you want to login to an EC2 Instance, use this command
 ssh josh@1.2.3.4
-```   
+```
+
+### The Bastion Host
+
+For security reasons, just about all of your EC2 Instances run in private subnets, which means they do not have a 
+public IP address, and cannot be reached directly from the public Internet. This reduces the "surface area" that 
+attackers can reach. Of course, we still need access into the VPCs, so we expose a single EC2 Instance to the public 
+Internet that serves as the point of entry to the network. Because we will concentrate most of our security
+efforts on this one EC2 Instance, it's easier to make it secure, and we call it the "bastion" (fortress) host.
+
+The idea is that you must first connect to the bastion host, which gets you "in" to the network, and you can then use 
+it as a "jump host" to connect to all the EC2 Instances in private subnets.
+
+To SSH to the Bastion Host, find its public IP address in the [What's deployed documentation](02-whats-deployed.md) or
+in the AWS Web Console. 
+ 
+Now SSH in as follows:
+
+1. First make sure the SSH key you uploaded to your IAM User profile above is in your 
+   [ssh-agent](http://mah.everybody.org/docs/ssh) as follows:
+   
+    ```bash
+    ssh-add /path/to/your/private/key
+   
+    # Example:
+    ssh-add ~/.ssh/id_rsa
+    ```
+
+1. Now SSH to the Bastion Host:
+
+    ```bash
+    ssh -A <converted-iam-user-name>@<bastion-host-ip>
+   
+    # Example:
+    ssh -A josh@1.2.3.4
+    ```
+   
+    Note the use of `-A` to enable ssh-agent forwarding. This sends authentication requests back to your own computer,
+    so that you can authenticate from the bastion host to other servers without having to copy your SSH key to the 
+    bastion host.
+   
+1. Now that you're logged into the Bastion Host, you can SSH to the private IP address of any other EC2 Instance in the 
+   network as follows:
+
+    ```bash
+    # From the Bastion Host
+    ssh <private-ip-of-other-machine>
+   
+    # Example:
+    ssh 10.0.0.1
+    ```
+
+Note that, per the [architecture overview](01-architecture-overview.md), the Bastion Host is located in the "mgmt" VPC,
+and this VPC is [peered](http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/vpc-peering.html) with all the other 
+VPCs you may need to access.
+
+
+### Local port forwarding
+
+What if you want to access your database from your local environment? 
+
+The database is located in a subnet that does not have direct Internet access, so you can only access the database 
+through the Bastion Host. Fortunately, SSH has a feature called 
+[local port forwarding](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
+that will allow you to:
+
+- Expose a port on your local machine.
+- Route all traffic on that port directly to the Bastion Host and then forward it to a given port on a remote machine
+  in the network.
+  
+As an example, imagine you want to connect to a Postgres database that runs in a private subnet, listening on port 
+`5432` with the private IP address `10.0.0.1`. To connect to this DB from your computer, via the bastion host, run
+the following command (note: make sure the security group of the Postgres database allows connections from the bastion 
+host!):
+
+```
+ssh -L 8000:10.0.0.1:5432 <user>@<bastion-ip>
+```
+
+The command above tells your computer to forward requests to `localhost:8000` to the bastion host, which, in turn, will
+forward them to the Postgres database at `10.0.0.1:5432`.
+
+After running the command above, you can use a Postgres client on your own computer to connect to the Postgres database
+as follows:
+
+```
+psql -host=localhost -port=8000
+```
+
+
+### SOCKS proxy
+
+What if you want to route all requests in your web browser through the Bastion host so that you can view private sites?
+
+SSH has a feature that allows you to treat the Bastion Host as a "SOCKS5 Proxy", which means that any app
+on your local machine that knows how to speak the SOCKS5 protocol can route all of its traffic through the Bastion Host.
+This means that you could, for example, browse the web as if you were doing so directly from the Bastion Host.
+
+Setting up a SOCKS Proxy connection is surprisingly easy:
+
+```
+ssh -D 5000 <user>@<bastion-ip>
+```
+
+This will open a listener on your local machine's port 5000 and route all connections to the Bastion Host. 
+
+Next, you need to configure our web browser to use the SOCKS Proxy. For example, to configure FireFox:
+ 
+1. Go to **Preferences...** > **Advanced** > **Network**
+1. Under **Connection**, select **Settings..**
+1. Select **Manual Proxy Configuration** and under **HTTP Proxy:** enter `localhost` and port `5000` (or whatever port
+   you chose).
+1. Now click **OK** and visit http://whatismyip.akamai.com/ to verify that your IP address is now the public IP
+   address of the Bastion Host.   
 
 
 
 
 ## VPN
 
-For security reasons, just about all of your EC2 Instances run in private subnets, which means they do not have a 
-public IP address, and cannot be reached directly from the public Internet. This reduces the "surface area" that 
-attackers can reach. Of course, we still need access into the VPCs, so we expose a single entrypoint into the network:
-an [OpenVPN server](https://openvpn.net/).
-
-The idea is that you use an OpenVPN client to connect to the OpenVPN server, which gets you "in" to the network, and
-you can then connect to other resources in the account as if you were making requests from the OpenVPN server itself.
-
-Here are the steps you'll need to take:
-
-* [One-time setup](#vpn-one-time-setup)
-* [Connect to the OpenVPN server](#connect-to-the-openvpn-server)
-* [Connect to other resources](#connect-to-other-resources)
-
-
-### VPN one-time setup
-
-The very first time you want to use OpenVPN, you need to:
-
-* [Install an OpenVPN client](#install-an-openvpn-client)
-* [Join the OpenVPN IAM group](#join-the-openvpn-iam-group)
-* [Use openvpn-admin to generate a configuration file](#use-openvpn-admin-to-generate-a-configuration-file)
-
-#### Install an OpenVPN client
-
-There are free and paid OpenVPN clients available for most major operating systems:
-
-* **OS X**: [Tunnelblick](https://tunnelblick.net/) or [Viscosity](https://www.sparklabs.com/viscosity/).
-* **Windows**: [official client](https://openvpn.net/index.php/open-source/downloads.html).
-* **Linux**: `apt-get install openvpn` or `yum install openvpn`.
-
-#### Join the OpenVPN IAM group
-  
-To get access to the OpenVPN server, you must be a member of the `openvpn-server-Users` IAM group. You or an admin can
-add your IAM user to this group in the [IAM page](https://console.aws.amazon.com/iam/home?region=ap-southeast-2#/groups/openvpn-server-Users).
-
-#### Use openvpn-admin to generate a configuration file
-
-To connect to an OpenVPN server, you need an OpenVPN configuration file, which includes a certificate that you can use
-to authenticate. To generate this configuration file, do the following:
-
-1. Install the latest [openvpn-admin binary](https://github.com/gruntwork-io/package-openvpn/releases) for your OS.
-
-1. Set up your AWS credentials using any of the options supported by [AWS CLI 
-   tools](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html). Typically, environment 
-   variables are the easiest and most secure.
-
-1. Run `openvpn-admin request --aws-region ap-southeast-2`.
-   
-1. This will create your OpenVPN configuration file in the current folder.   
-
-1. Load this configuration file into your OpenVPN client.
-
-### Connect to the OpenVPN server
-
-To connect to the OpenVPN server, simply click the "Connect" button next to your configuration file in the OpenVPN 
-client! After a few seconds, you should be connected.
-
- 
-### Connect to other resources
- 
-Now that you're connected to VPN, you can connect to other resources in your AWS account. For example, if you followed
-the ssh-grunt setup instructions above, you can SSH to an EC2 Instance with private IP address `1.2.3.4` as follows:
-
-```bash
-ssh <your_username>@1.2.3.4
-
-# Example:
-ssh josh@1.2.3.4
-```
-
-Similarly, non-production resources, such as a load balancer in the staging environment, or Jenkins in the mgmt 
-environment, should now be accessible to you. 
- 
-Note: we run OpenVPN in "split tunnel" mode. That means that only the IP addresses we have explicitly opted into 
-(namely, the private IP addresses in your AWS account) will be routed over VPN. Other IP addresses, such as requests
-you make from your computer to YouTube, GMail, Spotify, etc, are NOT routed over VPN. This dramatically reduces the 
-load on your OpenVPN server and your bandwidth usage in AWS.
+(VPN is not configured)
 
 
 

@@ -12,10 +12,7 @@ makes it easy to switch between multiple AWS accounts and use MFA in the CLI.
   extra tools for working with multiple Terraform modules. You should always use Terragrunt with this repo.
 
 - **[ssh-grunt](https://github.com/gruntwork-io/module-security/tree/master/modules/ssh-grunt)**: Your EC2 Instances use
-  this tool to allow SSH access to be managed via the IAM User console.
-
-- **[openvpn-admin](https://github.com/gruntwork-io/package-openvpn/releases)**: Use this tool to generate the 
-  configuration file you need to access the OpenVPN server.  
+  this tool to allow SSH access to be managed via the IAM User console.  
 
 To see a full list of all Gruntwork Infrastructure Packages and tools, see the [Gruntwork Table of 
 Contents](https://github.com/gruntwork-io/toc).

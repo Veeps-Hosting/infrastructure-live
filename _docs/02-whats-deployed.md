@@ -30,9 +30,9 @@ the following environments:
 
 ## Mgmt environment
 
-* OpenVPN server (only accessible from Veeps Hosting's office IP addresses, see [SSH and VPN](07-ssh-vpn.md)):
-    * `vpn.propertyiq-cloud.net`
-* Jenkins: https://jenkins.propertyiq-cloud.net (only accessible  when connected via VPN, see [Build, tests, and deployment (CI/CD)](05-ci-cd.md))
+* Bastion host (only accessible from Veeps Hosting's office IP addresses, see [SSH and VPN](07-ssh-vpn.md)):
+    * `bastion.propertyiq-cloud.net`
+* Jenkins: https://jenkins.propertyiq-cloud.net (only accessible  from Veeps Hosting's office IP addresses, see [Build, tests, and deployment (CI/CD)](05-ci-cd.md))
 
 
 

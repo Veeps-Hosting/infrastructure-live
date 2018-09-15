@@ -9,7 +9,6 @@ and tear down environments.
 1. [Build lambda functions](#build-lambda-functions)
 1. [Create EC2 Key Pairs](#create-ec2-key-pairs)
 1. [Configure Terraform backends](#configure-terraform-backends)
-1. [Configure the VPN server](#configure-the-vpn-server)
 1. [Create data store passwords](#create-data-store-passwords)
 1. [Import Route 53 hosted zones](#import-route-53-hosted-zones)
 1. [Create TLS certs](#create-tls-certs)
@@ -155,19 +154,6 @@ region of the S3 bucket and DynamoDB table in two places in the top-level folder
 1. `account.tfvars`
 
 When you run Terragrunt, if the S3 bucket or DynamoDB table don't already exist, they will be created automatically.
-
-
-
-
-## Configure the VPN server
-
-The Reference Architecture includes an [OpenVPN server](https://openvpn.net/). The very first time you deploy the
-server, it will create the [Public Key Infrastructure (PKI)](https://en.wikipedia.org/wiki/Public_key_infrastructure) it will
-use to sign certificates. This process is very CPU intensive and, on `t2.micro` EC2 Instances, it can take *hours*, as
-it seems to exceed the burst balance almost immediately.
-
-To avoid this, we recommend initially deploying the OpenVPN server with a larger instance (`t2.medium` can generate the
-PKI in 1-2 minutes). Once the PKI has been generated, you can downgrade to a smaller instance again to save money.
 
 
 

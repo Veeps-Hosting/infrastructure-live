@@ -26,7 +26,7 @@ terragrunt = {
 
   # When using the terragrunt xxx-all commands (e.g., apply-all, plan-all), deploy these dependencies before this module
   dependencies = {
-    paths = ["../../vpc", "../../../../_global/route53-public", "../route53-private", "../../../mgmt/openvpn-server"]
+    paths = ["../../vpc", "../../../../_global/route53-public", "../route53-private", "../../../mgmt/bastion-host"]
   }  
 }
 

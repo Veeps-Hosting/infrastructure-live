@@ -27,7 +27,7 @@ terragrunt = {
 
   # When using the terragrunt xxx-all commands (e.g., apply-all, plan-all), deploy these dependencies before this module
   dependencies = {
-    paths = ["../../vpc", "../../kms-master-key", "../../../mgmt/openvpn-server", "../../../_global/sns-topics"]
+    paths = ["../../vpc", "../../kms-master-key", "../../../mgmt/bastion-host", "../../../_global/sns-topics"]
   }
 }
 
@@ -50,7 +50,7 @@ storage_encrypted = false
 
 backup_retention_period = 0
 apply_immediately = true
-allow_connections_from_openvpn_server = false
+allow_connections_from_bastion_host = false
 
 # Trigger an alarm if the DB has more than 100 connections
 too_many_db_connections_threshold = 100

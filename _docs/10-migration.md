@@ -55,7 +55,6 @@ accounts. This consists of the following items:
 1. [IAM users](#iam-users)
 1. [IAM groups](#iam-groups)
 1. [SSH access](#ssh-access)
-1. [VPN access](#vpn-access)
 
 
 ### Security primer
@@ -130,21 +129,6 @@ for a more complete list):
 We have configured [ssh-grunt](https://github.com/gruntwork-io/module-security/tree/master/modules/ssh-grunt) on every
 EC2 Instance, so developers will be able to SSH to the servers using their own usernames and SSH keys. See
 [SSH and VPN](07-ssh-vpn.md) for instructions.
-
-
-### VPN Access
-
-All the EC2 Instances run in private subnets, so to access them, you must first connect via VPN. See [SSH and
-VPN](07-ssh-vpn.md) for instructions.
-
-Note that if you are migrating to AWS from some other data center, you may also want to set up VPN access back to that
-data center. See [How to connect your data center to
-AWS](https://aws.amazon.com/getting-started/projects/connect-data-center-to-aws/) and [Setting Up an AWS VPN
-Connection](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/SetUpVPNConnections.html) for instructions.
-
-This will involve setting up [Virtual Private Gateway](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_VPN.html#VPNGateway),
-and you will need to configure the VPCs to propagate routes for these Gateways using the `private_propagating_vgws`
-and `persistence_propagating_vgws` variables.
 
 
 
