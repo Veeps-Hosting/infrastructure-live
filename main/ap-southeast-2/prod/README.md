@@ -1,0 +1,6 @@
+# Prod Environment
+
+This folder contains the templates that define the live infrastructure for the prod environment, 
+which is for production workloads.
+
+Click on each subfolder to see its documentation.
