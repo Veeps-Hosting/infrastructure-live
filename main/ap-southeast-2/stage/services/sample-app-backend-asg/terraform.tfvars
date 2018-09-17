@@ -43,10 +43,10 @@ server_port = 8080
 instance_type = "t3.micro"
 keypair_name = "stage-services-ap-southeast-2-v1"
 
-min_size = 1
-max_size = 1
-desired_capacity = 1
-min_elb_capacity = 1
+min_size = 2
+max_size = 2
+desired_capacity = 2
+min_elb_capacity = 2
 
 db_remote_state_path = "data-stores/aurora/terraform.tfstate"
 

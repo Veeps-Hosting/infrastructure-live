@@ -40,7 +40,7 @@ ami = "ami-068e2cbc02ea7d18b"
 init_script_path = "/opt/sample-app-frontend/bin/run-app.sh"
 server_port = 8080
 
-instance_type = "t2.micro"
+instance_type = "t3.micro"
 keypair_name = "stage-services-ap-southeast-2-v1"
 
 min_size = 2
