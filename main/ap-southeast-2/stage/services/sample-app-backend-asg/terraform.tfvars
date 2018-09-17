@@ -40,13 +40,13 @@ ami = "ami-0dc4f6bf20a263f08"
 init_script_path = "/opt/sample-app-backend/bin/run-app.sh"
 server_port = 8080
 
-instance_type = "t2.micro"
+instance_type = "t3.micro"
 keypair_name = "stage-services-ap-southeast-2-v1"
 
-min_size = 2
-max_size = 2
-desired_capacity = 2
-min_elb_capacity = 2
+min_size = 1
+max_size = 1
+desired_capacity = 1
+min_elb_capacity = 1
 
 db_remote_state_path = "data-stores/aurora/terraform.tfstate"
 
