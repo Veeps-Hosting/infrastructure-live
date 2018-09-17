@@ -16,7 +16,7 @@ terragrunt = {
   # Terragrunt will copy the Terraform configurations specified by the source parameter, along with any files in the
   # working directory, into a temporary folder, and execute your Terraform commands in that folder.
   terraform {
-    source = "git::ssh://git@github.com/Veeps-Hosting/infrastructure-modules.git//security/iam-groups?ref=v0.0.1"
+    source = "git::ssh://git@github.com/Veeps-Hosting/infrastructure-modules.git//security/iam-groups?ref=master"
   }
 
   # Include all settings from the root terraform.tfvars file
