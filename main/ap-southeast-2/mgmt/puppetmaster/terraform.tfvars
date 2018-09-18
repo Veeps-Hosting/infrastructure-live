@@ -37,4 +37,5 @@ terragrunt = {
 name          = "puppet"
 instance_type = "t3.medium"
 ami           = "ami-07a3bd4944eb120a0"
-domain_name   = "puppet.propertyiq-cloud.net"
+dns_zone_id   = "Z3EDT3G8560CK3"
+dns_name      = "puppet.propertyiq-cloud.net"
