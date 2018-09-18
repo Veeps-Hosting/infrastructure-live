@@ -34,8 +34,9 @@ terragrunt = {
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
-name          = "puppet"
-instance_type = "t3.medium"
 ami           = "ami-07a3bd4944eb120a0"
 dns_zone_id   = "Z3EDT3G8560CK3"
 dns_name      = "puppet.propertyiq-cloud.net"
+instance_type = "t3.medium"
+name          = "puppet"
+keypair_name  = ""
