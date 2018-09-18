@@ -26,7 +26,7 @@ terragrunt = {
 
   # When using the terragrunt xxx-all commands (e.g., apply-all, plan-all), deploy these dependencies before this module
   dependencies = {
-    paths = ["../vpc", "../../../_global/route53-public", "../../_global/sns-topics"]
+    paths = ["../vpc", "../bastion-host", "../../_global/sns-topics", "../../../_global/route53-public"]
   }
 }
 
@@ -34,9 +34,7 @@ terragrunt = {
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
-ami           = "ami-07a3bd4944eb120a0"
-dns_zone_id   = "Z3EDT3G8560CK3"
-dns_name      = "puppet.propertyiq-cloud.net"
 instance_type = "t3.medium"
-name          = "puppet"
 keypair_name  = ""
+vpc_id        = "vpc-04ad0ebbde3117358"
+subnet_id     = "subnet-0ddd7b7a57953e2ea"
