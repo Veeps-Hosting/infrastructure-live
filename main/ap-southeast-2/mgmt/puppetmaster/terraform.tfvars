@@ -35,6 +35,7 @@ terragrunt = {
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
 instance_type = "t3.medium"
-keypair_name  = ""
+keypair_name  = "grant"
 vpc_id        = "vpc-04ad0ebbde3117358"
 subnet_id     = "subnet-0ddd7b7a57953e2ea"
+ami           = "i-0e14657eed0423a57"
