@@ -34,14 +34,6 @@ terragrunt = {
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
-
-name = "bastion-host"
-instance_type = "t3.micro"
-ami = "ami-06f866001b7121d5c"
-
-domain_name = "bastion.propertyiq-cloud.net"
-
-keypair_name = "bastion-host-ap-southeast-2-v1"
 allow_ssh_from_cidr_list = [
   "203.217.18.248/32", # Veeps office 1
   "203.206.231.248/32", # Veeps office 2
@@ -49,3 +41,8 @@ allow_ssh_from_cidr_list = [
   "203.19.79.0/24", # Veeps DC 2
   "122.106.231.223/32", # Veeps Grant Home
 ]
+ami           = "ami-06f866001b7121d5c"
+domain_name   = "bastion.propertyiq-cloud.net"
+instance_type = "t3.micro"
+keypair_name  = "bastion-host-ap-southeast-2-v1"
+name          = "bastion-host"

@@ -34,17 +34,12 @@ terragrunt = {
 # MODULE PARAMETERS
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 # ---------------------------------------------------------------------------------------------------------------------
-
-instance_type = "t2.small"
-memory = "1024m"
-ami = "ami-01098c28fa65dc849"
-jenkins_volume_size = 200
-jenkins_volume_encrypted = true
-
-keypair_name = "jenkins-ap-southeast-2-v1"
-
-domain_name = "jenkins.propertyiq-cloud.net"
-
 acm_ssl_certificate_domain = "*.propertyiq-cloud.net"
-
-tenancy = "default"
+ami                        = "ami-01098c28fa65dc849"
+domain_name                = "jenkins.propertyiq-cloud.net"
+instance_type              = "t2.small"
+jenkins_volume_size        = 200
+jenkins_volume_encrypted   = true
+keypair_name               = "jenkins-ap-southeast-2-v1"
+memory                     = "1024m"
+tenancy                    = "default"
