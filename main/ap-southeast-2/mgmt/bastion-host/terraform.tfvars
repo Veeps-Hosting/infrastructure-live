@@ -40,8 +40,9 @@ allow_ssh_from_cidr_list = [
   "202.8.64.0/24", # Veeps DC 1
   "203.19.79.0/24", # Veeps DC 2
   "122.106.231.223/32", # Veeps Grant Home
+  "62.203.52.138/32", # Brian Home Office
 ]
-ami           = "ami-06f866001b7121d5c"
+ami           = "ami-c975d6ab"
 domain_name   = "bastion.propertyiq-cloud.net"
 instance_type = "t3.micro"
 keypair_name  = "bastion-host-ap-southeast-2-v1"
