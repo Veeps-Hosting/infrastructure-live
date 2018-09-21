@@ -40,6 +40,7 @@ allow_ssh_from_cidr_list = [
   "202.8.64.0/24", # Veeps DC 1
   "203.19.79.0/24", # Veeps DC 2
   "122.106.231.223/32", # Veeps Grant Home
+  "89.145.165.201/32", # 56K Office
   "62.203.52.138/32", # Brian Home Office
 ]
 ami           = "ami-c975d6ab"
