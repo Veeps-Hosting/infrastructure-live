@@ -2,7 +2,7 @@
 
 In the previous section, you [ran the app in the dev environment](04-dev-environment.md), made some changes to the code,
 and committed those changes to Git. Now it's time to see what happens to those changes as part of the automated 
-continuous integration (CI) and continuous delivery (CD) process that is configured in Jenkins, which is deployed at [https://jenkins.propertyiq-cloud.net](https://jenkins.propertyiq-cloud.net):
+continuous integration (CI) and continuous delivery (CD) process that is configured in Jenkins, which is deployed at [https://jenkins.aws.propertyiq-cloud.net](https://jenkins.aws.propertyiq-cloud.net):
 
 * [Trigger a build](#trigger-a-build)
 * [Build and test the code](#build-and-test-the-code)

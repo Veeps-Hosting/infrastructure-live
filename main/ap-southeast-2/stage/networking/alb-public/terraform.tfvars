@@ -61,5 +61,5 @@ num_days_after_which_delete_log_data = 60
 access_logs_s3_bucket_name = "veeps-hosting-stage-alb-public-access-logs"
 
 create_route53_entry = true
-domain_name = "stage.propertyiq-cloud.net"
+domain_name = "stage.aws.propertyiq-cloud.net"
 
