@@ -36,7 +36,7 @@ terragrunt = {
 # ---------------------------------------------------------------------------------------------------------------------
 acm_ssl_certificate_domain = "*.propertyiq-cloud.net"
 ami                        = "ami-01098c28fa65dc849"
-domain_name                = "jenkins.aws.propertyiq-cloud.net"
+domain_name                = "jenkins.propertyiq-cloud.net"
 instance_type              = "t2.small"
 jenkins_volume_size        = 200
 jenkins_volume_encrypted   = true
